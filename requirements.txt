@@ -1,0 +1,6 @@
+chromedriver-binary-auto
+undetected-chromedriver
+selenium
+requests
+python-dotenv
+jupyterlab
