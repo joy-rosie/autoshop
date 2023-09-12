@@ -1,3 +1,5 @@
+from collections import namedtuple
+import re
 import time
 from typing import NoReturn, Optional
 
@@ -61,3 +63,19 @@ def login(
     LOGGER.debug(f"Clicked {xpath_sign_in=}")
     
     return driver
+
+
+PATTERN_DESCRIPTION = re.compile(pattern="\s+((\d+)\s*x\s*)?(\d+)\s*(grams|gram|g|litres|litre|ltr|l)", flags=re.IGNORECASE)
+Quantity = namedtuple("Quantity", field_names=["amount", "unit"])
+
+
+def get_quantity_from_description(description: str) -> Quantity:
+    groups = (
+        re.search(
+            pattern=PATTERN_DESCRIPTION,
+            string=description,
+        )
+        .groups()
+    )
+    multiplier = 1 if groups[0] is None else groups[0]
+    return Quantity(amount=float(multiplier) * float(groups[2]), unit=groups[-1].lower())
