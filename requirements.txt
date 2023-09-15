@@ -7,3 +7,4 @@ jupyterlab
 pandas
 pyarrow
 pygsheets
+pytest
