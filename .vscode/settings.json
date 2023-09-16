@@ -7,6 +7,9 @@
     "cSpell.words": [
         "autoshop",
         "chromedriver",
-        "prefs"
+        "iloc",
+        "iterrows",
+        "prefs",
+        "webelement"
     ]
 }

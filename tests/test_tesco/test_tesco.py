@@ -69,6 +69,11 @@ import autoshop
         dict(description="Tesco Cauliflower Rice 4 Pack 600G"),
         autoshop.tesco.Quantity(amount=4 * 600, unit="g"),
     ),
+    (
+        [],
+        dict(description="Tesco Red Split Lentils 1Kg"),
+        autoshop.tesco.Quantity(amount=1, unit="kg"),
+    ),
 ])
 def test_get_quantity_from_description(args, kwargs, expected):
     actual = autoshop.tesco.get_quantity_from_description(*args, **kwargs)
