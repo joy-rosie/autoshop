@@ -65,7 +65,7 @@ def login(
     return driver
 
 
-PATTERN_DESCRIPTION = re.compile(pattern="\s+((\d+)\s*x\s*)?(\d+)\s*(grams|gram|g|litres|litre|ltr|l)", flags=re.IGNORECASE)
+PATTERN_DESCRIPTION = re.compile(pattern="\s+([0-9]+\s*(x|pack)\s*)?([0-9]+[.]?[0-9]*)\s*(grams|gram|g|litres|litre|ltr|l|ml|pack).*", flags=re.IGNORECASE)
 Quantity = namedtuple("Quantity", field_names=["amount", "unit"])
 
 
@@ -77,5 +77,17 @@ def get_quantity_from_description(description: str) -> Quantity:
         )
         .groups()
     )
-    multiplier = 1 if groups[0] is None else groups[0]
-    return Quantity(amount=float(multiplier) * float(groups[2]), unit=groups[-1].lower())
+    multiplier = validate_multiplier(groups[0])
+    return Quantity(amount=multiplier * float(groups[2]), unit=groups[3].casefold())
+
+
+def validate_multiplier(value: Optional[str]):
+    return (
+        1 if value is None 
+        else float(
+            value.casefold()
+            .replace("x", "")
+            .replace("pack", "")
+            .strip()
+        )
+    )
