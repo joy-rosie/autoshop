@@ -68,6 +68,7 @@ def login(
 
 URL_FOOD_TEMPLATE = "https://www.tesco.com/groceries/en-GB/search?query={query}&page={page}&count={count}"
 
+
 def get_food_url(
     query: str,
     page: int = 1,
@@ -118,7 +119,9 @@ def get_food_elements(
     return elements
 
 
-def get_price(element: autoshop.typing.WebElement):
+def get_price(
+    element: autoshop.typing.WebElement,
+) -> float:
     try:
         return float(
             element
@@ -157,9 +160,9 @@ def get_quantity_from_description(description: Optional[str]) -> Quantity:
     return Quantity(amount=multiplier * float(groups[2]), unit=groups[3].casefold())
 
 
-def validate_multiplier(value: Optional[str]):
+def validate_multiplier(value: Optional[str]) -> float:
     return (
-        1 if value is None 
+        1. if value is None 
         else float(
             value.casefold()
             .replace("x", "")
@@ -167,3 +170,19 @@ def validate_multiplier(value: Optional[str]):
             .strip()
         )
     )
+
+
+def get_image_url(
+    value: Optional[autoshop.typing.WebElement],
+) -> str:
+    if value is None:
+        return "NA"
+    try:
+        return (
+            value
+            .find_element(by=autoshop.selenium.by.XPATH, value=".//img")
+            .get_attribute("srcset")
+            .split(" ")[0]
+        )
+    except Exception:
+        return "NA"
