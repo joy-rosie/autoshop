@@ -140,9 +140,12 @@ def get_price(
     except Exception:
         return float("nan")
 
-
+X = "x"
+PATTERN_MULTIPLIER = f"?P<multiplier>[0-9]+\s*{X}\s*"
+PATTERN_AMOUNT = "?P<amount>[0-9]+[.]?[0-9]*"
+PATTERN_UNIT = "?P<unit>kg|grams|gram|g|litres|litre|ltr|l|ml|pack"
 PATTERN_DESCRIPTION = re.compile(
-    pattern="\s+([0-9]+\s*(x|pack)\s*)?([0-9]+[.]?[0-9]*)\s*(kg|grams|gram|g|litres|litre|ltr|l|ml|pack).*", 
+    pattern=f"\s+({PATTERN_MULTIPLIER})?({PATTERN_AMOUNT})\s*({PATTERN_UNIT}).*", 
     flags=re.IGNORECASE,
 )
 Quantity = namedtuple("Quantity", field_names=["amount", "unit"])
@@ -155,9 +158,9 @@ def get_quantity_from_description(description: Optional[str]) -> Quantity:
     search = re.search(pattern=PATTERN_DESCRIPTION, string=description)
     if search is None:
         return QUANTITY_NA
-    groups = search.groups()
-    multiplier = validate_multiplier(groups[0])
-    return Quantity(amount=multiplier * float(groups[2]), unit=groups[3].casefold())
+    groups = search.groupdict()
+    multiplier = validate_multiplier(groups["multiplier"])
+    return Quantity(amount=multiplier * float(groups["amount"]), unit=groups["unit"].casefold())
 
 
 def validate_multiplier(value: Optional[str]) -> float:
@@ -165,8 +168,7 @@ def validate_multiplier(value: Optional[str]) -> float:
         1. if value is None 
         else float(
             value.casefold()
-            .replace("x", "")
-            .replace("pack", "")
+            .replace(X, "")
             .strip()
         )
     )

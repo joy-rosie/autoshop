@@ -1,2 +1,2 @@
-# auto-shop
+# autoshop
 automated grocery shopping
