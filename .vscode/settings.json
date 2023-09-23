@@ -8,9 +8,11 @@
         "astype",
         "autoshop",
         "chromedriver",
+        "dataframe",
         "iloc",
         "iterrows",
         "prefs",
+        "pygsheets",
         "signin",
         "webelement"
     ]
