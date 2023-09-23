@@ -141,9 +141,10 @@ def get_price(
         return float("nan")
 
 X = "x"
-PATTERN_MULTIPLIER = f"?P<multiplier>[0-9]+\s*{X}\s*"
+PACK = "pack"
+PATTERN_MULTIPLIER = f"(?P<multiplier>[0-9]+)\s*(?P<x_pack>{X}|{PACK})\s*"
 PATTERN_AMOUNT = "?P<amount>[0-9]+[.]?[0-9]*"
-PATTERN_UNIT = "?P<unit>kg|grams|gram|g|litres|litre|ltr|l|ml|pack"
+PATTERN_UNIT = f"?P<unit>kg|grams|gram|g|litres|litre|ltr|l|ml|{PACK}"
 PATTERN_DESCRIPTION = re.compile(
     pattern=f"\s+({PATTERN_MULTIPLIER})?({PATTERN_AMOUNT})\s*({PATTERN_UNIT}).*", 
     flags=re.IGNORECASE,
@@ -159,13 +160,20 @@ def get_quantity_from_description(description: Optional[str]) -> Quantity:
     if search is None:
         return QUANTITY_NA
     groups = search.groupdict()
-    multiplier = validate_multiplier(groups["multiplier"])
-    return Quantity(amount=multiplier * float(groups["amount"]), unit=groups["unit"].casefold())
+    # We want to ignore if pack is in the first bit because there is another unit after
+    multiplier = (
+        1. if groups["multiplier"] is None or PACK in groups["x_pack"].casefold()
+        else float(groups["multiplier"])
+    )
+    return Quantity(
+        amount=multiplier * float(groups["amount"]),
+        unit=groups["unit"].casefold(),
+    )
 
 
 def validate_multiplier(value: Optional[str]) -> float:
     return (
-        1. if value is None 
+        1. if value is None or PACK in value
         else float(
             value.casefold()
             .replace(X, "")

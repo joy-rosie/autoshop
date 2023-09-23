@@ -67,7 +67,7 @@ import autoshop
     (
         [],
         dict(description="Tesco Cauliflower Rice 4 Pack 600G"),
-        autoshop.tesco.Quantity(amount=4 * 600, unit="g"),
+        autoshop.tesco.Quantity(amount=600, unit="g"),
     ),
     (
         [],
