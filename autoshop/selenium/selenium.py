@@ -1,7 +1,6 @@
 from typing import Optional, NoReturn
 import time
 
-from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -19,7 +18,7 @@ def wait_and_get(
     by: Optional[By] = None,
     timeout: Optional[int] = None,
     log: Optional[bool] = None,
-) -> WebElement:
+) -> autoshop.typing.WebElement:
     """
     Waits and gets the first element found.
     """
@@ -53,7 +52,7 @@ def wait_and_get_all(
     by: Optional[By] = None,
     timeout: Optional[int] = None,
     log: Optional[bool] = None,
-) -> WebElement:
+) -> list[autoshop.typing.WebElement]:
     """
     Waits and gets all elements found.
     """

@@ -4,4 +4,7 @@ selenium
 requests
 python-dotenv
 jupyterlab
+pandas
+pyarrow
+pygsheets
 pytest
