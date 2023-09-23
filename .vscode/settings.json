@@ -5,11 +5,13 @@
     "python.testing.unittestEnabled": false,
     "python.testing.pytestEnabled": true,
     "cSpell.words": [
+        "astype",
         "autoshop",
         "chromedriver",
         "iloc",
         "iterrows",
         "prefs",
+        "signin",
         "webelement"
     ]
 }
