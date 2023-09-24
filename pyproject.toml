@@ -21,9 +21,14 @@ dependencies = [
     "pygsheets==2.0.6",
     "pint==0.22",
     "jupyterlab==4.0.6",
-    "pytest==7.4.2",
 ]
 dynamic = ["version"]
+
+[project.optional-dependencies]
+test = [
+    "autoshop",
+    "pytest==7.4.2",
+]
 
 [tool.setuptools]
 packages = ["autoshop"]
