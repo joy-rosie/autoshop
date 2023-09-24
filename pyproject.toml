@@ -10,7 +10,23 @@ authors = [
 description = "Python package to help with grocery shopping"
 readme = "README.md"
 requires-python = ">=3.11"
+dependencies = [
+    "chromedriver-binary-auto",
+    "undetected-chromedriver",
+    "selenium",
+    "requests",
+    "python-dotenv",
+    "jupyterlab",
+    "pandas",
+    "pyarrow",
+    "pygsheets",
+    "pint",
+    "pytest",
+]
 dynamic = ["version"]
+
+[tool.setuptools]
+packages = ["autoshop"]
 
 [tool.setuptools.dynamic]
 dependencies = {file = ["requirements.txt"]}
