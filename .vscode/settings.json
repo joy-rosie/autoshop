@@ -9,6 +9,7 @@
         "autoshop",
         "chromedriver",
         "dataframe",
+        "iframe",
         "iloc",
         "iterrows",
         "prefs",
