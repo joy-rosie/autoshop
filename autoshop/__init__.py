@@ -3,10 +3,12 @@ from .util import (
     logging,
 )
 
-from . import environment as env
-from . import selenium
-from . import chrome
-from . import tesco
-from . import google
+from . import (
+    environment as env,
+    selenium,
+    chrome,
+    tesco,
+    google,
+)
 
 logger = logging.logger(name="autoshop")
