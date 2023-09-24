@@ -1,5 +1,4 @@
 import autoshop
-import pandas as pd
 
 
 def test_get_groceries():
@@ -11,5 +10,58 @@ def test_get_groceries():
         "amount",
         "unit",
         "notRequired",
+    ]
+    assert len(df) > 0
+
+
+def test_get_all_food():
+    df = autoshop.google.get_all_food()
+    assert df.columns.to_list() == [
+        "food",
+        "name",
+        "unitDefault",
+        "idCofid",
+        "specific",
+        "search",
+    ]
+    assert len(df) > 0
+
+
+def test_get_shop():
+    df = autoshop.google.get_shop()
+    assert df.columns.to_list() == [
+        "food",
+        "nameFood",
+        "unit",
+        "SUM of amount",
+    ]
+    assert len(df) > 0
+
+
+def test_get_food_conversion():
+    df = autoshop.google.get_food_conversion()
+    assert df.columns.to_list() == [
+        "food",
+        "unitFrom",
+        "toGram",
+    ]
+    assert len(df) > 0
+
+
+def test_get_tesco_food_map():
+    df = autoshop.google.get_tesco_food_map()
+    assert df.columns.to_list() == [
+        "food",
+        "name",
+        "search",
+        "raw",
+        "description",
+        "link",
+        "image",
+        "amount",
+        "unit",
+        "price",
+        "datetime",
+        "order",
     ]
     assert len(df) > 0

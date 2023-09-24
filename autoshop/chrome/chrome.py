@@ -1,7 +1,7 @@
 import chromedriver_binary
 import undetected_chromedriver
 
-from ..util.typing import WebDriver as TypeDriver
+from autoshop.util.typing import WebDriver as TypeDriver
 
 
 def driver() -> TypeDriver:
