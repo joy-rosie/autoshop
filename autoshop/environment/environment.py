@@ -7,7 +7,7 @@ from dotenv import dotenv_values
 from autoshop.util.logging import logger as get_logger
 
 
-PATH_DOTENV_DEFAULT = Path(__name__).parent.parent / ".env"
+PATH_DOTENV_DEFAULT = Path(__file__).parents[2] / ".env"
 LOGGER = get_logger(__name__)
 TYPE_ENVIRONMENT_VALUE = Union[str, int, float]
 
