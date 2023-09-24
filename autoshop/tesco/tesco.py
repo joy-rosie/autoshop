@@ -19,32 +19,32 @@ def login(
     email: Optional[str] = None,
     password: Optional[str] = None,
 ) -> NoReturn:
-    
+
     if url is None:
         url = URL_LOGIN_DEFAULT
-        
+
     if email is None:
         email = autoshop.env.get(key=EMAIL_LOGIN)
-        
+
     if password is None:
         password = autoshop.env.get(key=PASSWORD_LOGIN)
-        
+
     driver.get(url)
-    
+
     LOGGER.info(f"Logging into via {url=} with {email=}")
-    
+
     xpath_cookies_accept = "//button[@type='submit']//span[text()='Accept all cookies']"
     autoshop.selenium.wait_and_click(
         driver=driver,
         value=xpath_cookies_accept,
     )
-    
+
     time.sleep(5)
 
     xpath_email = "//input[@id='email']"
     element_email = autoshop.selenium.wait_and_send_keys(
         driver=driver,
-        value=xpath_email, 
+        value=xpath_email,
         keys=email,
     )
 
@@ -62,7 +62,7 @@ def login(
         value=xpath_sign_in,
     )
     LOGGER.debug(f"Clicked {xpath_sign_in=}")
-    
+
     return driver
 
 
@@ -100,20 +100,16 @@ def get_food_elements(
         elements = []
 
     # Don't want the elements where the text is empty
-    elements = [
-        element
-        for element in elements 
-        if element.children()[0].text == ""
-    ]
+    elements = [element for element in elements if element.children()[0].text == ""]
 
     # Don't want the sponsored items
     elements = [
         element
-        for element in elements 
+        for element in elements
         if not (
-            element
-            .find_element(by=autoshop.selenium.by.XPATH, value="..")
-            .text.startswith("Sponsored")
+            element.find_element(
+                by=autoshop.selenium.by.XPATH, value=".."
+            ).text.startswith("Sponsored")
         )
     ]
     return elements
@@ -124,21 +120,20 @@ def get_price(
 ) -> float:
     try:
         return float(
-            element
-            .find_element(
-                by=autoshop.selenium.by.XPATH, 
+            element.find_element(
+                by=autoshop.selenium.by.XPATH,
                 value=(
                     ".//p[contains(text(), '£') "
                     "and not(contains(text(), '/each')) "
                     "and @class != 'product-info-message']"
                 ),
-            )
-            .text.replace("£", "")
+            ).text.replace("£", "")
         )
     except KeyboardInterrupt as e:
         raise e
     except Exception:
         return float("nan")
+
 
 X = "x"
 PACK = "pack"
@@ -146,7 +141,7 @@ PATTERN_MULTIPLIER = f"(?P<multiplier>[0-9]+)\s*(?P<x_pack>{X}|{PACK})\s*"
 PATTERN_AMOUNT = "?P<amount>[0-9]+[.]?[0-9]*"
 PATTERN_UNIT = f"?P<unit>kg|grams|gram|g|litres|litre|ltr|l|ml|{PACK}"
 PATTERN_DESCRIPTION = re.compile(
-    pattern=f"\s+({PATTERN_MULTIPLIER})?({PATTERN_AMOUNT})\s*({PATTERN_UNIT}).*", 
+    pattern=f"\s+({PATTERN_MULTIPLIER})?({PATTERN_AMOUNT})\s*({PATTERN_UNIT}).*",
     flags=re.IGNORECASE,
 )
 Quantity = namedtuple("Quantity", field_names=["amount", "unit"])
@@ -162,7 +157,8 @@ def get_quantity_from_description(description: Optional[str]) -> Quantity:
     groups = search.groupdict()
     # We want to ignore if pack is in the first bit because there is another unit after
     multiplier = (
-        1. if groups["multiplier"] is None or PACK in groups["x_pack"].casefold()
+        1.0
+        if groups["multiplier"] is None or PACK in groups["x_pack"].casefold()
         else float(groups["multiplier"])
     )
     return Quantity(
@@ -173,12 +169,9 @@ def get_quantity_from_description(description: Optional[str]) -> Quantity:
 
 def validate_multiplier(value: Optional[str]) -> float:
     return (
-        1. if value is None or PACK in value
-        else float(
-            value.casefold()
-            .replace(X, "")
-            .strip()
-        )
+        1.0
+        if value is None or PACK in value
+        else float(value.casefold().replace(X, "").strip())
     )
 
 
@@ -189,8 +182,7 @@ def get_image_url(
         return "NA"
     try:
         return (
-            value
-            .find_element(by=autoshop.selenium.by.XPATH, value=".//img")
+            value.find_element(by=autoshop.selenium.by.XPATH, value=".//img")
             .get_attribute("srcset")
             .split(" ")[0]
         )
