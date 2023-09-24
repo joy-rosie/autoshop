@@ -1,3 +1,3 @@
-from .chrome import (
+from autoshop.chrome import (
     driver,
 )
