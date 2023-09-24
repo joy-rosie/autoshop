@@ -32,6 +32,3 @@ test = [
 
 [tool.setuptools]
 packages = ["autoshop"]
-
-[tool.setuptools.dynamic]
-dependencies = {file = ["requirements.txt"]}
