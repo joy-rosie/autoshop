@@ -1,12 +1,12 @@
-from .util import (
+from autoshop.util import (
     typing,
     logging,
 )
 
-from . import environment as env
-from . import selenium
-from . import chrome
-from . import tesco
-from . import google
+from autoshop import environment as env
+from autoshop import selenium
+from autoshop import chrome
+from autoshop import tesco
+from autoshop import google
 
 logger = logging.logger(name="autoshop")

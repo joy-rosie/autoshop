@@ -1,3 +1,3 @@
-from .environment import (
+from autoshop.environment import (
     get,
 )
