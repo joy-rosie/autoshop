@@ -4,7 +4,7 @@ from typing import Optional, Union
 
 from dotenv import dotenv_values
 
-from ..util.logging import logger as get_logger
+from autoshop.util.logging import logger as get_logger
 
 
 PATH_DOTENV_DEFAULT = Path(__name__).parent.parent / ".env"
@@ -12,7 +12,7 @@ LOGGER = get_logger(__name__)
 TYPE_ENVIRONMENT_VALUE = Union[str, int, float]
 
 
-@functools.lru_cache()
+@functools.lru_cache(maxsize=None)
 def get_environment_variables(
     path: Optional[Path] = None,
 ) -> dict[str, TYPE_ENVIRONMENT_VALUE]:

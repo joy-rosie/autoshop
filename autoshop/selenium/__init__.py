@@ -1,4 +1,4 @@
-from autoshop.selenium import (
+from .selenium import (
     wait_and_get,
     wait_and_get_all,
     wait_and_click,

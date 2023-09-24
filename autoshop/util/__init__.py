@@ -1,4 +1,4 @@
-from autoshop.util import (
+from . import (
     logging,
     typing,
 )

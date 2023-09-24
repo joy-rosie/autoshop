@@ -1,4 +1,4 @@
-from autoshop.tesco import (
+from .tesco import (
     login,
     get_food_url,
     get_food_elements,
