@@ -33,7 +33,7 @@ def test_get_shop():
         "food",
         "nameFood",
         "unit",
-        "SUM of amount",
+        "amount",
     ]
     assert len(df) > 0
 
@@ -42,7 +42,7 @@ def test_get_food_conversion():
     df = autoshop.google.get_food_conversion()
     assert df.columns.to_list() == [
         "food",
-        "unitFrom",
+        "unit",
         "toGram",
     ]
     assert len(df) > 0
