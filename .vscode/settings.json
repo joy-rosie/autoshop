@@ -15,6 +15,7 @@
         "dropna",
         "iframe",
         "iloc",
+        "isna",
         "iterrows",
         "prefs",
         "pygsheets",

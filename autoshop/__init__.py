@@ -9,6 +9,7 @@ from . import (
     chrome,
     tesco,
     google,
+    unit,
 )
 
 logger = logging.logger(name="autoshop")

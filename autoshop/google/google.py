@@ -92,4 +92,7 @@ def get_tesco_food_map(
         )
         .drop(columns=["raw", "image"])
         .dropna(subset=["order"])
+        .assign(
+            amount=lambda x: pd.to_numeric(x["amount"], errors="coerce"),
+        )
     )
