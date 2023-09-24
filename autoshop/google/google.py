@@ -61,6 +61,9 @@ def get_shop(
         .iloc[1:]
         .reset_index(drop=True)
         .rename(columns={"SUM of amount": "amount"})
+        .assign(
+            amount=lambda x: pd.to_numeric(x["amount"], errors="coerce"),
+        )
     )
     
 
@@ -73,13 +76,20 @@ def get_food_conversion(
             google_api_key=google_api_key,
         )
         .rename(columns={"unitFrom": "unit"})
+        .assign(
+            toGram=lambda x: pd.to_numeric(x["toGram"], errors="coerce"),
+        )
     )
 
 
 def get_tesco_food_map(
     google_api_key: Optional[str] = None,
 ) -> pd.DataFrame:
-    return get(
-        url=f"{URL_BASE}/{ID_TESCO_FOOD}/values/map!A1:L{10 * MAX_SIZE}",
-        google_api_key=google_api_key,
+    return (
+        get(
+            url=f"{URL_BASE}/{ID_TESCO_FOOD}/values/map!A1:L{10 * MAX_SIZE}",
+            google_api_key=google_api_key,
+        )
+        .drop(columns=["raw", "image"])
+        .dropna(subset=["order"])
     )

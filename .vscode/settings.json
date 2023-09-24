@@ -5,18 +5,21 @@
     "python.testing.unittestEnabled": false,
     "python.testing.pytestEnabled": true,
     "cSpell.words": [
+        "aggfunc",
         "astype",
         "autoshop",
         "chromedriver",
         "Cofid",
         "dataframe",
         "dotenv",
+        "dropna",
         "iframe",
         "iloc",
         "iterrows",
         "prefs",
         "pygsheets",
         "signin",
+        "skipna",
         "webelement"
     ]
 }
