@@ -19,7 +19,6 @@ def test_get_all_food():
     assert df.columns.to_list() == [
         "food",
         "name",
-        "unitDefault",
         "idCofid",
         "specific",
         "search",

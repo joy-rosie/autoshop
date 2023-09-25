@@ -163,7 +163,7 @@ def get_quantity_from_description(description: Optional[str]) -> Quantity:
     )
     return Quantity(
         amount=multiplier * float(groups["amount"]),
-        unit=groups["unit"].casefold(),
+        unit="medium" if (unit := groups["unit"].casefold()) == PACK else unit,
     )
 
 

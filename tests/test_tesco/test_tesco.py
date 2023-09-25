@@ -67,12 +67,12 @@ import autoshop
         (
             [],
             dict(description="Redmere Farms Garlic 4 Pack"),
-            autoshop.tesco.Quantity(amount=4, unit="pack"),
+            autoshop.tesco.Quantity(amount=4, unit="medium"),
         ),
         (
             [],
             dict(description="Tesco Red Onions 3Pack Minimum"),
-            autoshop.tesco.Quantity(amount=3, unit="pack"),
+            autoshop.tesco.Quantity(amount=3, unit="medium"),
         ),
         (
             [],
