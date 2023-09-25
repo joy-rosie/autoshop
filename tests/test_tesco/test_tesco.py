@@ -84,6 +84,11 @@ import autoshop
             dict(description="Tesco Red Split Lentils 1Kg"),
             autoshop.tesco.Quantity(amount=1, unit="kg"),
         ),
+        (
+            [],
+            dict(description="Cauldron 6 Lincolnshire Sausages 276G"),
+            autoshop.tesco.Quantity(amount=276, unit="g"),
+        ),
     ],
 )
 def test_get_quantity_from_description(args, kwargs, expected):

@@ -140,8 +140,9 @@ PACK = "pack"
 PATTERN_MULTIPLIER = f"(?P<multiplier>[0-9]+)\s*(?P<x_pack>{X}|{PACK})\s*"
 PATTERN_AMOUNT = "?P<amount>[0-9]+[.]?[0-9]*"
 PATTERN_UNIT = f"?P<unit>kg|grams|gram|g|litres|litre|ltr|l|ml|{PACK}"
+PATTERN_SUFFIX = "(ce|minimum|\.\.)"
 PATTERN_DESCRIPTION = re.compile(
-    pattern=f"\s+({PATTERN_MULTIPLIER})?({PATTERN_AMOUNT})\s*({PATTERN_UNIT}).*",
+    pattern=f"\s+({PATTERN_MULTIPLIER})?({PATTERN_AMOUNT})\s*({PATTERN_UNIT})\s*{PATTERN_SUFFIX}?\s*$",
     flags=re.IGNORECASE,
 )
 Quantity = namedtuple("Quantity", field_names=["amount", "unit"])
