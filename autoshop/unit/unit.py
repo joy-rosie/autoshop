@@ -1,7 +1,13 @@
+import functools
 from typing import Optional
 import pint
 
-UNIT_REGISTRY = pint.UnitRegistry()
+
+@functools.cache
+def registry() -> pint.UnitRegistry:
+    unit_registry = pint.UnitRegistry()
+    unit_registry.define("ltr = liter")
+    return unit_registry
 
 
 def parse_to(
@@ -11,7 +17,7 @@ def parse_to(
     unit_registry: Optional[pint.UnitRegistry] = None,
 ) -> float:
     if unit_registry is None:
-        unit_registry = UNIT_REGISTRY
+        unit_registry = registry()
     try:
         return (
             (amount * unit_registry.parse_units(unit_from.casefold()))

@@ -10,6 +10,8 @@ URL_LOGIN_DEFAULT = "https://www.tesco.com/account/login/en-GB?from=/"
 EMAIL_LOGIN = "EMAIL_LOGIN"
 PASSWORD_LOGIN = "PASSWORD_LOGIN"
 
+URL_ORDERS = "https://www.tesco.com/groceries/en-GB/orders"
+
 LOGGER = autoshop.logging.logger(__name__)
 
 
@@ -140,8 +142,9 @@ PACK = "pack"
 PATTERN_MULTIPLIER = f"(?P<multiplier>[0-9]+)\s*(?P<x_pack>{X}|{PACK})\s*"
 PATTERN_AMOUNT = "?P<amount>[0-9]+[.]?[0-9]*"
 PATTERN_UNIT = f"?P<unit>kg|grams|gram|g|litres|litre|ltr|l|ml|{PACK}"
+PATTERN_SUFFIX = "(ce|minimum|\.\.)"
 PATTERN_DESCRIPTION = re.compile(
-    pattern=f"\s+({PATTERN_MULTIPLIER})?({PATTERN_AMOUNT})\s*({PATTERN_UNIT}).*",
+    pattern=f"\s+({PATTERN_MULTIPLIER})?({PATTERN_AMOUNT})\s*({PATTERN_UNIT})\s*{PATTERN_SUFFIX}?\s*$",
     flags=re.IGNORECASE,
 )
 Quantity = namedtuple("Quantity", field_names=["amount", "unit"])
@@ -163,7 +166,7 @@ def get_quantity_from_description(description: Optional[str]) -> Quantity:
     )
     return Quantity(
         amount=multiplier * float(groups["amount"]),
-        unit=groups["unit"].casefold(),
+        unit="medium" if (unit := groups["unit"].casefold()) == PACK else unit,
     )
 
 
@@ -188,3 +191,65 @@ def get_image_url(
         )
     except Exception:
         return "NA"
+
+
+def go_to_orders(
+    driver: autoshop.typing.WebDriver,
+) -> NoReturn:
+    time.sleep(1)
+    driver.get(URL_ORDERS)
+    
+    
+def make_changes_to_first_order(
+    driver: autoshop.typing.WebDriver,
+) -> NoReturn:
+    go_to_orders(driver=driver)
+    xpath_make_changes = "//span[text()='Make changes']"
+    elements = autoshop.selenium.wait_and_get_all(
+        driver=driver,
+        value=xpath_make_changes,
+    )
+
+    # Need to make this a bit better
+    elements[0].click()
+
+
+def empty_basket(
+    driver: autoshop.typing.WebDriver,
+) -> NoReturn:
+    xpath_view_full_basket = "//span[text()='View full basket']/.."
+    autoshop.selenium.wait_and_click(driver=driver, value=xpath_view_full_basket)
+
+    xpath_empty_basket = "//a//span[text()='Empty basket']/.."
+    autoshop.selenium.wait_and_click(driver=driver, value=xpath_empty_basket)
+
+    xpath_empty_button = "//button[text()='Empty']"
+    autoshop.selenium.wait_and_click(driver=driver, value=xpath_empty_button)
+
+    xpath_browse_the_store = "//h3[text()='Your basket is empty']"
+    _ = autoshop.selenium.wait_and_get(driver=driver, value=xpath_browse_the_store)
+
+
+def add_food_to_basket(
+    driver: autoshop.typing.WebDriver,
+    url: str,
+    amount: int,
+    info: str,
+) -> NoReturn:
+    xpath_product_input_amount = "//input[@type='number']"
+    xpath_add = "//span[text()='Add']"
+    xpath_checkout_to_confirm_changes = "//span[text()='Checkout to confirm changes']"
+
+    try:
+        autoshop.logger.debug(f"Trying to add {amount=} for {url=}, {info}")
+        driver.get(url)
+        autoshop.selenium.wait_and_send_keys_and_delete(
+            driver=driver,
+            value=xpath_product_input_amount,
+            keys=amount,
+        )
+        autoshop.selenium.wait_and_click(driver=driver, value=xpath_add)
+        # This checks that the action has been done
+        _ = autoshop.selenium.wait_and_get(driver=driver, value=xpath_checkout_to_confirm_changes)
+    except Exception as exception:
+        autoshop.logger.error(f"Failed - {info}, {exception=}")

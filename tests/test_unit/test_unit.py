@@ -34,6 +34,7 @@ def test_parse_to_grams(args, kwargs, expected):
     ([], dict(amount=1, unit="l"), 1000),
     ([], dict(amount=1, unit="liter"), 1000),
     ([], dict(amount=1, unit="litre"), 1000),
+    ([], dict(amount=1, unit="ltr"), 1000),
     ([], dict(amount=1, unit="g"), float("nan")),
     ([], dict(amount=1, unit=""), float("nan")),
     ([], dict(amount=1, unit="pack"), float("nan")),

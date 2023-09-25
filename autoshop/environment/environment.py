@@ -12,7 +12,7 @@ LOGGER = get_logger(__name__)
 TYPE_ENVIRONMENT_VALUE = Union[str, int, float]
 
 
-@functools.lru_cache(maxsize=None)
+@functools.cache
 def get_environment_variables(
     path: Optional[Path] = None,
 ) -> dict[str, TYPE_ENVIRONMENT_VALUE]:
