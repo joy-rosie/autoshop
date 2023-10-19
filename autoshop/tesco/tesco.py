@@ -204,7 +204,7 @@ def make_changes_to_first_order(
     driver: autoshop.typing.WebDriver,
 ) -> NoReturn:
     go_to_orders(driver=driver)
-    xpath_make_changes = "//span[text()='Make changes']"
+    xpath_make_changes = "//span[text()='Make changes']/.."
     elements = autoshop.selenium.wait_and_get_all(
         driver=driver,
         value=xpath_make_changes,
@@ -237,19 +237,22 @@ def add_food_to_basket(
     info: str,
 ) -> NoReturn:
     xpath_product_input_amount = "//input[@type='number']"
-    xpath_add = "//span[text()='Add']"
+    xpath_add = "//span[text()='Add']/.."
     xpath_checkout_to_confirm_changes = "//span[text()='Checkout to confirm changes']"
 
     try:
         autoshop.logger.debug(f"Trying to add {amount=} for {url=}, {info}")
         driver.get(url)
+        time.sleep(1)
         autoshop.selenium.wait_and_send_keys_and_delete(
             driver=driver,
             value=xpath_product_input_amount,
             keys=amount,
         )
+        time.sleep(1)
         autoshop.selenium.wait_and_click(driver=driver, value=xpath_add)
         # This checks that the action has been done
         _ = autoshop.selenium.wait_and_get(driver=driver, value=xpath_checkout_to_confirm_changes)
     except Exception as exception:
         autoshop.logger.error(f"Failed - {info}, {exception=}")
+    time.sleep(1)
