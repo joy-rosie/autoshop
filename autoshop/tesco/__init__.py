@@ -10,4 +10,5 @@ from .tesco import (
     make_changes_to_first_order,
     empty_basket,
     add_food_to_basket,
+    add_food_to_basket_with_retry,
 )
