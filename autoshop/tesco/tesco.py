@@ -240,19 +240,67 @@ def add_food_to_basket(
     xpath_add = "//span[text()='Add']/.."
     xpath_checkout_to_confirm_changes = "//span[text()='Checkout to confirm changes']"
 
-    try:
-        autoshop.logger.debug(f"Trying to add {amount=} for {url=}, {info}")
-        driver.get(url)
-        time.sleep(1)
-        autoshop.selenium.wait_and_send_keys_and_delete(
-            driver=driver,
-            value=xpath_product_input_amount,
-            keys=amount,
-        )
-        time.sleep(1)
-        autoshop.selenium.wait_and_click(driver=driver, value=xpath_add)
-        # This checks that the action has been done
-        _ = autoshop.selenium.wait_and_get(driver=driver, value=xpath_checkout_to_confirm_changes)
-    except Exception as exception:
-        autoshop.logger.error(f"Failed - {info}, {exception=}")
+    autoshop.logger.debug(f"Trying to add {amount=} for {url=}, {info}")
+    driver.get(url)
     time.sleep(1)
+    autoshop.selenium.wait_and_send_keys_and_delete(
+        driver=driver,
+        value=xpath_product_input_amount,
+        keys=amount,
+    )
+    time.sleep(1)
+    autoshop.selenium.wait_and_click(driver=driver, value=xpath_add)
+    # This checks that the action has been done
+    _ = autoshop.selenium.wait_and_get(driver=driver, value=xpath_checkout_to_confirm_changes)
+
+
+
+def check_if_out_of_stock(
+    driver: autoshop.typing.WebDriver,
+) -> bool:
+    try:
+        xpath_out_of_stock = "//div[contains(text(),'currently out of stock')]"
+        autoshop.selenium.wait_and_get(
+            driver=driver,
+            value=xpath_out_of_stock,
+            by=autoshop.selenium.by.XPATH,
+            timeout=1,
+        )
+        return True
+    except:
+        return False
+
+
+def add_food_to_basket_with_retry(
+    driver: autoshop.typing.WebDriver,
+    url: str,
+    amount: int,
+    info: str,
+    max_retries: Optional[int] = None,
+) -> NoReturn:
+    if max_retries is None:
+        max_retries = 5
+    
+    num_retries = -1
+    done = False
+    while not done:
+        try:
+            num_retries += 1
+            add_food_to_basket(
+                driver=driver,
+                url=url,
+                amount=amount,
+                info=info,
+            )
+            done = True
+        except Exception as exception:
+            if check_if_out_of_stock(driver=driver):
+                autoshop.logger.warning(f"Out of stock - {info}")
+                return
+            if num_retries >= max_retries:
+                autoshop.logger.error(f"Failed - {info}, {exception=}")
+                done = True
+            time.sleep(1)
+            autoshop.logger.debug("Refreshing")
+            driver.refresh()
+        
