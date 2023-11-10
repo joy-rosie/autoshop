@@ -217,7 +217,7 @@ def make_changes_to_first_order(
 def empty_basket(
     driver: autoshop.typing.WebDriver,
 ) -> NoReturn:
-    xpath_view_full_basket = "//span[text()='View full basket']/.."
+    xpath_view_full_basket = "//a//span[text()='View full basket']/../.."
     autoshop.selenium.wait_and_click(driver=driver, value=xpath_view_full_basket)
 
     xpath_empty_basket = "//a//span[text()='Empty basket']/.."
