@@ -11,4 +11,6 @@ from .tesco import (
     empty_basket,
     add_food_to_basket,
     add_food_to_basket_with_retry,
+    checkout,
+    pay,
 )

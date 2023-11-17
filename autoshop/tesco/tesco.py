@@ -1,4 +1,5 @@
 from collections import namedtuple
+import getpass
 import re
 import time
 from typing import NoReturn, Optional
@@ -221,7 +222,7 @@ def empty_basket(
     autoshop.selenium.wait_and_click(driver=driver, value=xpath_view_full_basket)
 
     xpath_empty_basket = "//a//span[text()='Empty basket']/.."
-    autoshop.selenium.wait_and_click(driver=driver, value=xpath_empty_basket)
+    autoshop.selenium.wait_and_execute_click(driver=driver, value=xpath_empty_basket)
 
     xpath_empty_button = "//button[text()='Empty']"
     autoshop.selenium.wait_and_click(driver=driver, value=xpath_empty_button)
@@ -304,3 +305,34 @@ def add_food_to_basket_with_retry(
             autoshop.logger.debug("Refreshing")
             driver.refresh()
         
+
+def checkout(
+    driver: autoshop.typing.WebDriver,
+) -> NoReturn:
+    xpath_span_checkout = "//span[text()='Checkout']"
+    autoshop.selenium.wait_and_execute_click(driver=driver, value=xpath_span_checkout)
+
+    xpath_a_checkout = "//a//span[text()='Checkout']"
+    autoshop.selenium.wait_and_execute_click(driver=driver, value=xpath_a_checkout)
+
+    xpath_a_continue_checkout = "//a//span[text()='Continue checkout']"
+    autoshop.selenium.wait_and_execute_click(driver=driver, value=xpath_a_continue_checkout)
+
+    xpath_span_continue_to_payment = "//span[text()='Continue to payment']"
+    autoshop.selenium.wait_and_execute_click(driver=driver, value=xpath_span_continue_to_payment)
+
+def pay(
+    driver: autoshop.typing.WebDriver,
+) -> NoReturn:
+    driver.switch_to.frame("bounty-iframe")
+
+    xpath_cvc = "//input[@id='card-cvc']"
+    autoshop.selenium.wait_and_send_keys(
+        driver=driver, 
+        value=xpath_cvc,
+        keys=getpass.getpass(),
+        log=False,
+    )
+
+    xpath_confirm_order = "//input[@value='Confirm order']"
+    autoshop.selenium.wait_and_click(driver=driver, value=xpath_confirm_order)
