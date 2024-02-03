@@ -251,7 +251,7 @@ def add_food_to_basket(
     autoshop.logger.debug(f"Trying to add {amount=} for {url=}, {info}")
     driver.get(url)
     time.sleep(1)
-    autoshop.selenium.wait_and_send_keys_and_delete(
+    autoshop.selenium.wait_and_delete_and_send_keys(
         driver=driver,
         value=xpath_product_input_amount,
         keys=amount,

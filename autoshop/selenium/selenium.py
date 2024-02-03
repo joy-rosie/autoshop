@@ -199,7 +199,7 @@ def wait_and_select_all_and_send_keys(
         LOGGER.debug(f"{wait_and_select_all_and_send_keys.__name__}: {keys=} into {value=}")
 
 
-def wait_and_send_keys_and_delete(
+def wait_and_delete_and_send_keys(
     driver: autoshop.typing.WebDriver,
     value: str,
     keys: str,
@@ -213,11 +213,12 @@ def wait_and_send_keys_and_delete(
 
     element = wait_and_get(driver=driver, value=value, by=by, timeout=timeout)
 
+    for _ in range(5):
+        element.send_keys(Keys.DELETE)
     element.send_keys(keys)
-    element.send_keys(Keys.DELETE)
 
     if log is None:
         log = True
 
     if log:
-        LOGGER.debug(f"{wait_and_send_keys_and_delete.__name__}: {keys=}, {value=}")
+        LOGGER.debug(f"{wait_and_delete_and_send_keys.__name__}: {keys=}, {value=}")
