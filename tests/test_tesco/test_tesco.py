@@ -3,6 +3,9 @@ import pytest
 import autoshop
 
 
+TEST_URL = "https://www.tesco.com/groceries/en-GB/products/254656543"
+
+
 @pytest.mark.parametrize(
     "args, kwargs, expected",
     [
@@ -94,3 +97,59 @@ import autoshop
 def test_get_quantity_from_description(args, kwargs, expected):
     actual = autoshop.tesco.get_quantity_from_description(*args, **kwargs)
     assert expected == actual
+
+
+@pytest.fixture(scope="module")
+def driver() -> autoshop.typing.WebDriver:
+    yield autoshop.chrome.driver()
+
+
+def test_login(driver):
+    autoshop.tesco.login(driver=driver)
+    element = autoshop.selenium.wait_and_get(
+        driver=driver,
+        value="//h1[contains(text(), 'Good morning') or contains(text(), ', here’s your account overview')]",
+    )
+    assert element is not None
+
+
+@pytest.fixture(scope="module")
+def driver_logged_in(driver: autoshop.typing.WebDriver) -> autoshop.typing.WebDriver:
+    autoshop.tesco.login(driver=driver)
+    yield driver
+
+
+def test_go_to_orders(driver_logged_in):
+    autoshop.tesco.go_to_orders(driver=driver_logged_in)
+    element = autoshop.selenium.wait_and_get_all(
+        driver=driver_logged_in,
+        value="//h1[text()='My orders']",
+    )
+    assert element is not None
+    
+
+@pytest.fixture
+def driver_empty_basket(driver_logged_in: autoshop.typing.WebDriver) -> autoshop.typing.WebDriver:
+    driver_logged_in.get(TEST_URL)
+    autoshop.tesco.empty_basket(driver=driver_logged_in)
+    yield driver_logged_in
+    autoshop.tesco.empty_basket(driver=driver_logged_in)
+
+
+def test_add_food_to_basket(driver_empty_basket):
+    url = TEST_URL
+    xpath_check_done = f"//div//ul//li//a[@href='{url}']"
+    amount = 2
+    autoshop.tesco.add_food_to_basket(
+        driver=driver_empty_basket,
+        url=url,
+        amount=amount,
+        info="test",
+        xpath_check_done=xpath_check_done,
+    )
+    xpath_quantity = f"{xpath_check_done}/../..//h5[text()='{amount}']"
+    element = autoshop.selenium.wait_and_get(
+        driver=driver_empty_basket,
+        value=xpath_quantity,
+    )
+    assert element is not None
