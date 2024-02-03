@@ -220,15 +220,20 @@ def empty_basket(
 ) -> NoReturn:
     xpath_view_full_basket = "//a//span[text()='View full basket']/../.."
     autoshop.selenium.wait_and_click(driver=driver, value=xpath_view_full_basket)
+    
+    xpath_your_basket_empty = "//h3[text()='Your basket is empty']"
+    basket_empty = autoshop.selenium.wait_and_check_exists(
+        driver=driver,
+        value=xpath_your_basket_empty,
+    )
+    if not basket_empty:
+        xpath_empty_basket = "//a//span[text()='Empty basket']/.."
+        autoshop.selenium.wait_and_execute_click(driver=driver, value=xpath_empty_basket)
 
-    xpath_empty_basket = "//a//span[text()='Empty basket']/.."
-    autoshop.selenium.wait_and_execute_click(driver=driver, value=xpath_empty_basket)
+        xpath_empty_button = "//button[text()='Empty']"
+        autoshop.selenium.wait_and_click(driver=driver, value=xpath_empty_button)
 
-    xpath_empty_button = "//button[text()='Empty']"
-    autoshop.selenium.wait_and_click(driver=driver, value=xpath_empty_button)
-
-    xpath_browse_the_store = "//h3[text()='Your basket is empty']"
-    _ = autoshop.selenium.wait_and_get(driver=driver, value=xpath_browse_the_store)
+        _ = autoshop.selenium.wait_and_get(driver=driver, value=xpath_your_basket_empty)
 
 
 def add_food_to_basket(
@@ -236,10 +241,12 @@ def add_food_to_basket(
     url: str,
     amount: int,
     info: str,
+    xpath_check_done: Optional[str] = None,
 ) -> NoReturn:
     xpath_product_input_amount = "//input[@type='number']"
     xpath_add = "//span[text()='Add']/.."
-    xpath_checkout_to_confirm_changes = "//span[text()='Checkout to confirm changes']"
+    if xpath_check_done is None:
+        xpath_check_done = "//span[text()='Checkout to confirm changes']"
 
     autoshop.logger.debug(f"Trying to add {amount=} for {url=}, {info}")
     driver.get(url)
@@ -252,7 +259,7 @@ def add_food_to_basket(
     time.sleep(1)
     autoshop.selenium.wait_and_click(driver=driver, value=xpath_add)
     # This checks that the action has been done
-    _ = autoshop.selenium.wait_and_get(driver=driver, value=xpath_checkout_to_confirm_changes)
+    _ = autoshop.selenium.wait_and_get(driver=driver, value=xpath_check_done)
 
 
 

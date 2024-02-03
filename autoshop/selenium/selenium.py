@@ -1,6 +1,7 @@
 from typing import Optional, NoReturn
 import time
 
+from selenium.common.exceptions import NoSuchElementException, TimeoutException
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -10,6 +11,37 @@ import autoshop
 
 TIMEOUT_DEFAULT = 10
 LOGGER = autoshop.logging.logger(__name__)
+
+
+def wait_and_check_exists(
+    driver: autoshop.typing.WebDriver,
+    value: str,
+    by: Optional[By] = None,
+    timeout: Optional[int] = None,
+    log: Optional[bool] = None,
+) -> bool:
+    """
+    Waits and checks if element exists.
+    """
+
+    if by is None:
+        by = By.XPATH
+
+    if timeout is None:
+        timeout = TIMEOUT_DEFAULT
+
+    if log is None:
+        log = True
+
+    if log:
+        LOGGER.debug(f"{wait_and_check_exists.__name__} {by=}, {value=}, {timeout=}")
+    
+    try:
+        wait = expected_conditions.presence_of_element_located((by, value))
+        WebDriverWait(driver, timeout).until(wait)
+    except (NoSuchElementException, TimeoutException):
+        return False
+    return True
 
 
 def wait_and_get(
@@ -33,7 +65,7 @@ def wait_and_get(
         log = True
 
     if log:
-        LOGGER.debug(f"wait_and_get {by=}, {value=}, {timeout=}")
+        LOGGER.debug(f"{wait_and_get.__name__} {by=}, {value=}, {timeout=}")
 
     wait = expected_conditions.presence_of_element_located((by, value))
     WebDriverWait(driver, timeout).until(wait)
@@ -67,7 +99,7 @@ def wait_and_get_all(
         log = True
 
     if log:
-        LOGGER.debug(f"wait_and_get_all {by=}, {value=}, {timeout=}")
+        LOGGER.debug(f"{wait_and_get_all.__name__} {by=}, {value=}, {timeout=}")
 
     wait = expected_conditions.presence_of_element_located((by, value))
     WebDriverWait(driver, timeout).until(wait)
@@ -98,7 +130,7 @@ def wait_and_click(
         log = True
 
     if log:
-        LOGGER.debug(f"wait_and_click {value=}")
+        LOGGER.debug(f"{wait_and_click.__name__} {value=}")
 
 
 def wait_and_execute_click(
@@ -141,7 +173,7 @@ def wait_and_send_keys(
         log = True
 
     if log:
-        LOGGER.debug(f"wait_and_send_keys: {keys=} into {value=}")
+        LOGGER.debug(f"{wait_and_send_keys.__name__}: {keys=} into {value=}")
 
 
 def wait_and_select_all_and_send_keys(
@@ -164,7 +196,7 @@ def wait_and_select_all_and_send_keys(
         log = True
 
     if log:
-        LOGGER.debug(f"wait_and_select_all_and_send_keys: {keys=} into {value=}")
+        LOGGER.debug(f"{wait_and_select_all_and_send_keys.__name__}: {keys=} into {value=}")
 
 
 def wait_and_send_keys_and_delete(
@@ -188,4 +220,4 @@ def wait_and_send_keys_and_delete(
         log = True
 
     if log:
-        LOGGER.debug(f"wait_and_send_keys_and_delete: {keys=}, {value=}")
+        LOGGER.debug(f"{wait_and_send_keys_and_delete.__name__}: {keys=}, {value=}")
