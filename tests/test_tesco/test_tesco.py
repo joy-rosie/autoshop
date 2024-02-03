@@ -104,6 +104,7 @@ def driver() -> autoshop.typing.WebDriver:
     yield autoshop.chrome.driver()
 
 
+@pytest.mark.integration
 def test_login(driver):
     autoshop.tesco.login(driver=driver)
     element = autoshop.selenium.wait_and_get(
@@ -119,6 +120,7 @@ def driver_logged_in(driver: autoshop.typing.WebDriver) -> autoshop.typing.WebDr
     yield driver
 
 
+@pytest.mark.integration
 def test_go_to_orders(driver_logged_in):
     autoshop.tesco.go_to_orders(driver=driver_logged_in)
     element = autoshop.selenium.wait_and_get_all(
@@ -136,6 +138,7 @@ def driver_empty_basket(driver_logged_in: autoshop.typing.WebDriver) -> autoshop
     autoshop.tesco.empty_basket(driver=driver_logged_in)
 
 
+@pytest.mark.integration
 def test_add_food_to_basket(driver_empty_basket):
     url = TEST_URL
     xpath_check_done = f"//div//ul//li//a[@href='{url}']"
