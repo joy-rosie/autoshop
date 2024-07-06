@@ -227,10 +227,10 @@ def empty_basket(
         value=xpath_your_basket_empty,
     )
     if not basket_empty:
-        xpath_empty_basket = "//a//span[text()='Empty basket']/.."
+        xpath_empty_basket = "//button//span[text()='Empty Basket']/.."
         autoshop.selenium.wait_and_execute_click(driver=driver, value=xpath_empty_basket)
 
-        xpath_empty_button = "//button[text()='Empty']"
+        xpath_empty_button = "//button//span[text()='Empty basket']/.."
         autoshop.selenium.wait_and_click(driver=driver, value=xpath_empty_button)
 
         _ = autoshop.selenium.wait_and_get(driver=driver, value=xpath_your_basket_empty)
