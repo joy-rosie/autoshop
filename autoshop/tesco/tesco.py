@@ -315,11 +315,13 @@ def add_food_to_basket_with_retry(
 
 def checkout(
     driver: autoshop.typing.WebDriver,
+    to_confirm_changes: bool = False,
 ) -> NoReturn:
-    xpath_span_checkout = "//span[text()='Checkout']"
+    checkout_str = "Checkout" + (" to confirm changes" if to_confirm_changes else "")
+    xpath_span_checkout = f"//span[text()='{checkout_str}']"
     autoshop.selenium.wait_and_execute_click(driver=driver, value=xpath_span_checkout)
 
-    xpath_a_checkout = "//a//span[text()='Checkout']"
+    xpath_a_checkout = f"//a//span[text()='{checkout_str}']"
     autoshop.selenium.wait_and_execute_click(driver=driver, value=xpath_a_checkout)
 
     xpath_a_continue_checkout = "//a//span[text()='Continue checkout']"
