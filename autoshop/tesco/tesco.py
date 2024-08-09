@@ -201,8 +201,9 @@ def go_to_orders(
     driver.get(URL_ORDERS)
     
     
-def make_changes_to_first_order(
+def make_changes_to_nth_order(
     driver: autoshop.typing.WebDriver,
+    n: int,
 ) -> NoReturn:
     go_to_orders(driver=driver)
     xpath_make_changes = "//span[text()='Make changes']/.."
@@ -212,7 +213,7 @@ def make_changes_to_first_order(
     )
 
     # Need to make this a bit better
-    elements[0].click()
+    elements[n].click()
 
 
 def empty_basket(

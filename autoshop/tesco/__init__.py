@@ -7,7 +7,7 @@ from .tesco import (
     get_image_url,
     Quantity,
     go_to_orders,
-    make_changes_to_first_order,
+    make_changes_to_nth_order,
     empty_basket,
     add_food_to_basket,
     add_food_to_basket_with_retry,
