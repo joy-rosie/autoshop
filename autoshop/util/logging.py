@@ -7,7 +7,7 @@ FORMATTER = logging.Formatter(
 )
 
 FILENAME = "autoshop.log"
-FILE_HANDLER = logging.FileHandler(FILENAME, mode="w")
+FILE_HANDLER = logging.FileHandler(FILENAME, mode="a")
 FILE_HANDLER.setLevel(logging.DEBUG)
 FILE_HANDLER.setFormatter(FORMATTER)
 
