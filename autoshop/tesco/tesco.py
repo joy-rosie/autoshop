@@ -12,6 +12,7 @@ EMAIL_LOGIN = "EMAIL_LOGIN"
 PASSWORD_LOGIN = "PASSWORD_LOGIN"
 
 URL_ORDERS = "https://www.tesco.com/groceries/en-GB/orders"
+URL_DELIVERY_SLOTS =  "https://www.tesco.com/groceries/en-GB/slots/delivery"
 
 LOGGER = autoshop.logging.logger(__name__)
 
@@ -199,7 +200,14 @@ def go_to_orders(
 ) -> NoReturn:
     time.sleep(1)
     driver.get(URL_ORDERS)
-    
+
+
+def go_to_delivery_slots(
+    driver: autoshop.typing.WebDriver,
+) -> NoReturn:
+    time.sleep(1)
+    driver.get(URL_DELIVERY_SLOTS)
+
     
 def make_changes_to_nth_order(
     driver: autoshop.typing.WebDriver,
@@ -324,12 +332,17 @@ def checkout(
 
     xpath_a_checkout = f"//a//span[text()='{checkout_str}']"
     autoshop.selenium.wait_and_execute_click(driver=driver, value=xpath_a_checkout)
+    
+    if to_confirm_changes:
+        xpath_a_continue_checkout = "//button//span[text()='Continue checkout']"
+        autoshop.selenium.wait_and_execute_click(driver=driver, value=xpath_a_continue_checkout)
+    else:
+        xpath_a_continue_checkout = "//a//span[text()='Continue checkout']"
+        autoshop.selenium.wait_and_execute_click(driver=driver, value=xpath_a_continue_checkout)
 
-    xpath_a_continue_checkout = "//a//span[text()='Continue checkout']"
-    autoshop.selenium.wait_and_execute_click(driver=driver, value=xpath_a_continue_checkout)
+        xpath_span_continue_to_payment = "//span[text()='Continue to payment']"
+        autoshop.selenium.wait_and_execute_click(driver=driver, value=xpath_span_continue_to_payment)
 
-    xpath_span_continue_to_payment = "//span[text()='Continue to payment']"
-    autoshop.selenium.wait_and_execute_click(driver=driver, value=xpath_span_continue_to_payment)
 
 def pay(
     driver: autoshop.typing.WebDriver,
