@@ -38,7 +38,7 @@ def login(
     LOGGER.info(f"Logging into via {url=} with {email=}")
 
     xpath_cookies_accept = "//button[@type='submit']//span[text()='Accept all cookies']"
-    autoshop.selenium.wait_and_click(
+    autoshop.selenium.wait_and_execute_click(
         driver=driver,
         value=xpath_cookies_accept,
     )
