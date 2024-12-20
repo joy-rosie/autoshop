@@ -46,22 +46,28 @@ def login(
     time.sleep(5)
 
     xpath_email = "//input[@id='email']"
-    element_email = autoshop.selenium.wait_and_send_keys(
+    _ = autoshop.selenium.wait_and_send_keys(
         driver=driver,
         value=xpath_email,
         keys=email,
     )
 
     xpath_password = "//input[@id='password']"
-    element_email = autoshop.selenium.wait_and_send_keys(
+    _ = autoshop.selenium.wait_and_send_keys(
         driver=driver,
         value=xpath_password,
         keys=password,
         log=False,
     )
 
+    xpath_remember_me = "//input[@id='rememberMe']"
+    _ = autoshop.selenium.wait_and_click(
+        driver=driver,
+        value=xpath_remember_me,
+    )
+
     xpath_sign_in = "//button[@id='signin-button']"
-    element_sign_in = autoshop.selenium.wait_and_click(
+    _ = autoshop.selenium.wait_and_click(
         driver=driver,
         value=xpath_sign_in,
     )
