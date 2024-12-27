@@ -302,7 +302,7 @@ def add_food_to_basket_with_retry(
     max_retries: Optional[int] = None,
 ) -> NoReturn:
     if max_retries is None:
-        max_retries = 5
+        max_retries = 1
     
     num_retries = -1
     done = False
