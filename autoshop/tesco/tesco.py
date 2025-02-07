@@ -51,6 +51,17 @@ def login(
         value=xpath_email,
         keys=email,
     )
+    
+    xpath_next = "//button/span[text()='Next']"
+    next_exists = autoshop.selenium.wait_and_check_exists(
+        driver=driver,
+        value=xpath_next,
+    )
+    if next_exists:
+        _ = autoshop.selenium.wait_and_execute_click(
+            driver=driver,
+            value=xpath_next,
+        )
 
     xpath_password = "//input[@id='password']"
     _ = autoshop.selenium.wait_and_send_keys(
