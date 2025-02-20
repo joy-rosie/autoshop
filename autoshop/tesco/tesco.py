@@ -58,23 +58,28 @@ def login(
         value=xpath_next,
     )
     if next_exists:
+        xpath_remember_me = "//input[@id='rememberMe']"
+        _ = autoshop.selenium.wait_and_click(
+            driver=driver,
+            value=xpath_remember_me,
+        )
         _ = autoshop.selenium.wait_and_execute_click(
             driver=driver,
             value=xpath_next,
         )
-
+    else:
+        xpath_remember_me = "//input[@id='rememberMe']"
+        _ = autoshop.selenium.wait_and_click(
+            driver=driver,
+            value=xpath_remember_me,
+        )
+        
     xpath_password = "//input[@id='password']"
     _ = autoshop.selenium.wait_and_send_keys(
         driver=driver,
         value=xpath_password,
         keys=password,
         log=False,
-    )
-
-    xpath_remember_me = "//input[@id='rememberMe']"
-    _ = autoshop.selenium.wait_and_click(
-        driver=driver,
-        value=xpath_remember_me,
     )
 
     xpath_sign_in = "//button[@id='signin-button']"
