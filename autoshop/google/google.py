@@ -5,6 +5,16 @@ import requests
 
 import autoshop
 
+__all__ = [
+    "get",
+    "get_all_food",
+    "get_food_conversion",
+    "get_groceries",
+    "get_shop",
+    "get_tesco_food_map",
+]
+
+
 LOGGER = autoshop.logging.logger(__name__)
 URL_BASE = "https://sheets.googleapis.com/v4/spreadsheets"
 ID_INFORMATION_RECIPE = "1qMt1jKFf3OVILmA-MsQ8Ga-8vsYLsCX0ky00zairf9M"

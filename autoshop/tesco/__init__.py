@@ -15,3 +15,21 @@ from .tesco import (
     make_changes_to_nth_order,
     pay,
 )
+
+__all__ = [
+    "Quantity",
+    "add_food_to_basket",
+    "add_food_to_basket_with_retry",
+    "checkout",
+    "empty_basket",
+    "get_food_elements",
+    "get_food_url",
+    "get_image_url",
+    "get_price",
+    "get_quantity_from_description",
+    "go_to_delivery_slots",
+    "go_to_orders",
+    "login",
+    "make_changes_to_nth_order",
+    "pay",
+]

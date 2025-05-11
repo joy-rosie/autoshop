@@ -2,6 +2,8 @@ import undetected_chromedriver
 
 from autoshop.util.typing import WebDriver as TypeDriver
 
+__all__ = ["driver"]
+
 
 def driver() -> TypeDriver:
     options = undetected_chromedriver.ChromeOptions()
