@@ -122,11 +122,11 @@ def driver_logged_in(driver: autoshop.typing.WebDriver) -> autoshop.typing.WebDr
 @pytest.mark.integration
 def test_go_to_orders(driver_logged_in):
     autoshop.tesco.go_to_orders(driver=driver_logged_in)
-    element = autoshop.selenium.wait_and_get_all(
+    elements = autoshop.selenium.wait_and_get_all(
         driver=driver_logged_in,
         value="//h1[text()='My orders']",
     )
-    assert element is not None
+    assert elements is not None and len(elements) > 0
 
 
 @pytest.fixture
