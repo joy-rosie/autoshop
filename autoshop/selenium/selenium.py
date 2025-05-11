@@ -1,11 +1,11 @@
-from typing import Optional, NoReturn
 import time
+from typing import NoReturn, Optional
 
 from selenium.common.exceptions import NoSuchElementException, TimeoutException
-from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions
+from selenium.webdriver.support.ui import WebDriverWait
 
 import autoshop
 
@@ -35,7 +35,7 @@ def wait_and_check_exists(
 
     if log:
         LOGGER.debug(f"{wait_and_check_exists.__name__} {by=}, {value=}, {timeout=}")
-    
+
     try:
         wait = expected_conditions.presence_of_element_located((by, value))
         WebDriverWait(driver, timeout).until(wait)
@@ -196,7 +196,9 @@ def wait_and_select_all_and_send_keys(
         log = True
 
     if log:
-        LOGGER.debug(f"{wait_and_select_all_and_send_keys.__name__}: {keys=} into {value=}")
+        LOGGER.debug(
+            f"{wait_and_select_all_and_send_keys.__name__}: {keys=} into {value=}"
+        )
 
 
 def wait_and_delete_and_send_keys(

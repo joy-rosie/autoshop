@@ -1,4 +1,3 @@
-import chromedriver_binary
 import undetected_chromedriver
 
 from autoshop.util.typing import WebDriver as TypeDriver

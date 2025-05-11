@@ -1,9 +1,9 @@
-from collections import namedtuple
 import getpass
 import re
 import time
-from typing import NoReturn, Optional
 import urllib.parse
+from collections import namedtuple
+from typing import NoReturn, Optional
 
 import autoshop
 
@@ -12,7 +12,7 @@ EMAIL_LOGIN = "EMAIL_LOGIN"
 PASSWORD_LOGIN = "PASSWORD_LOGIN"
 
 URL_ORDERS = "https://www.tesco.com/groceries/en-GB/orders"
-URL_DELIVERY_SLOTS =  "https://www.tesco.com/groceries/en-GB/slots/delivery"
+URL_DELIVERY_SLOTS = "https://www.tesco.com/groceries/en-GB/slots/delivery"
 
 LOGGER = autoshop.logging.logger(__name__)
 
@@ -23,7 +23,6 @@ def login(
     email: Optional[str] = None,
     password: Optional[str] = None,
 ) -> NoReturn:
-
     if url is None:
         url = URL_LOGIN_DEFAULT
 
@@ -51,7 +50,7 @@ def login(
         value=xpath_email,
         keys=email,
     )
-    
+
     xpath_next = "//button/span[text()='Next']"
     next_exists = autoshop.selenium.wait_and_check_exists(
         driver=driver,
@@ -73,7 +72,7 @@ def login(
             driver=driver,
             value=xpath_remember_me,
         )
-        
+
     xpath_password = "//input[@id='password']"
     _ = autoshop.selenium.wait_and_send_keys(
         driver=driver,
@@ -230,7 +229,7 @@ def go_to_delivery_slots(
     time.sleep(1)
     driver.get(URL_DELIVERY_SLOTS)
 
-    
+
 def make_changes_to_nth_order(
     driver: autoshop.typing.WebDriver,
     n: int,
@@ -251,7 +250,7 @@ def empty_basket(
 ) -> NoReturn:
     xpath_view_full_basket = "//a//span[text()='View full basket']/../.."
     autoshop.selenium.wait_and_click(driver=driver, value=xpath_view_full_basket)
-    
+
     xpath_your_basket_empty = "//h3[text()='Your basket is empty']"
     basket_empty = autoshop.selenium.wait_and_check_exists(
         driver=driver,
@@ -259,7 +258,9 @@ def empty_basket(
     )
     if not basket_empty:
         xpath_empty_basket = "//button//span[text()='Empty Basket']/.."
-        autoshop.selenium.wait_and_execute_click(driver=driver, value=xpath_empty_basket)
+        autoshop.selenium.wait_and_execute_click(
+            driver=driver, value=xpath_empty_basket
+        )
 
         xpath_empty_button = "//button//span[text()='Empty basket']/.."
         autoshop.selenium.wait_and_click(driver=driver, value=xpath_empty_button)
@@ -293,7 +294,6 @@ def add_food_to_basket(
     _ = autoshop.selenium.wait_and_get(driver=driver, value=xpath_check_done)
 
 
-
 def check_if_out_of_stock(
     driver: autoshop.typing.WebDriver,
 ) -> bool:
@@ -306,7 +306,7 @@ def check_if_out_of_stock(
             timeout=1,
         )
         return True
-    except:
+    except Exception:
         return False
 
 
@@ -319,7 +319,7 @@ def add_food_to_basket_with_retry(
 ) -> NoReturn:
     if max_retries is None:
         max_retries = 1
-    
+
     num_retries = -1
     done = False
     while not done:
@@ -342,7 +342,7 @@ def add_food_to_basket_with_retry(
             time.sleep(1)
             autoshop.logger.debug("Refreshing")
             driver.refresh()
-        
+
 
 def checkout(
     driver: autoshop.typing.WebDriver,
@@ -354,16 +354,22 @@ def checkout(
 
     xpath_a_checkout = f"//a//span[text()='{checkout_str}']"
     autoshop.selenium.wait_and_execute_click(driver=driver, value=xpath_a_checkout)
-    
+
     if to_confirm_changes:
         xpath_a_continue_checkout = "//button//span[text()='Continue checkout']"
-        autoshop.selenium.wait_and_execute_click(driver=driver, value=xpath_a_continue_checkout)
+        autoshop.selenium.wait_and_execute_click(
+            driver=driver, value=xpath_a_continue_checkout
+        )
     else:
         xpath_a_continue_checkout = "//a//span[text()='Continue checkout']"
-        autoshop.selenium.wait_and_execute_click(driver=driver, value=xpath_a_continue_checkout)
+        autoshop.selenium.wait_and_execute_click(
+            driver=driver, value=xpath_a_continue_checkout
+        )
 
         xpath_span_continue_to_payment = "//span[text()='Continue to payment']"
-        autoshop.selenium.wait_and_execute_click(driver=driver, value=xpath_span_continue_to_payment)
+        autoshop.selenium.wait_and_execute_click(
+            driver=driver, value=xpath_span_continue_to_payment
+        )
 
 
 def pay(
@@ -373,7 +379,7 @@ def pay(
 
     xpath_cvc = "//input[@id='card-cvc']"
     autoshop.selenium.wait_and_send_keys(
-        driver=driver, 
+        driver=driver,
         value=xpath_cvc,
         keys=getpass.getpass(),
         log=False,

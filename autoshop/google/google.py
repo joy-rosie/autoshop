@@ -65,7 +65,7 @@ def get_shop(
             amount=lambda x: pd.to_numeric(x["amount"], errors="coerce"),
         )
     )
-    
+
 
 def get_food_conversion(
     google_api_key: Optional[str] = None,

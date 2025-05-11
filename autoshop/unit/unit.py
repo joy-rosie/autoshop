@@ -1,5 +1,6 @@
 import functools
 from typing import Optional
+
 import pint
 
 

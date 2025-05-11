@@ -1,15 +1,16 @@
-from .util import (
-    typing,
-    logging,
-)
-
 from . import (
-    environment as env,
-    selenium,
     chrome,
-    tesco,
+)
+from . import environment as env
+from . import (
     google,
+    selenium,
+    tesco,
     unit,
+)
+from .util import (
+    logging,
+    typing,
 )
 
 logger = logging.logger(name="autoshop")

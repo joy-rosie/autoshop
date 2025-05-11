@@ -2,7 +2,6 @@ import pytest
 
 import autoshop
 
-
 TEST_URL = "https://www.tesco.com/groceries/en-GB/products/254656543"
 
 
@@ -109,7 +108,7 @@ def test_login(driver):
     autoshop.tesco.login(driver=driver)
     element = autoshop.selenium.wait_and_get(
         driver=driver,
-        value="//h1[contains(text(), 'Good morning') or contains(text(), ', here’s your account overview')]",
+        value="//h2[contains(text(), 'Hello Roseanna')]",
     )
     assert element is not None
 
@@ -128,10 +127,12 @@ def test_go_to_orders(driver_logged_in):
         value="//h1[text()='My orders']",
     )
     assert element is not None
-    
+
 
 @pytest.fixture
-def driver_empty_basket(driver_logged_in: autoshop.typing.WebDriver) -> autoshop.typing.WebDriver:
+def driver_empty_basket(
+    driver_logged_in: autoshop.typing.WebDriver,
+) -> autoshop.typing.WebDriver:
     driver_logged_in.get(TEST_URL)
     autoshop.tesco.empty_basket(driver=driver_logged_in)
     yield driver_logged_in
