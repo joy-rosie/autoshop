@@ -1,6 +1,6 @@
 import pytest
 
-import autoshop
+from autoshop import all as autoshop
 
 
 @pytest.mark.integration

@@ -7,7 +7,8 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.ui import WebDriverWait
 
-import autoshop
+from autoshop.util.logging import logger as get_logger
+from autoshop.util.typing import WebDriver, WebElement
 
 __all__ = [
     "wait_and_check_exists",
@@ -21,11 +22,11 @@ __all__ = [
 ]
 
 TIMEOUT_DEFAULT = 10
-LOGGER = autoshop.logging.logger(__name__)
+LOGGER = get_logger(__name__)
 
 
 def wait_and_check_exists(
-    driver: autoshop.typing.WebDriver,
+    driver: WebDriver,
     value: str,
     by: Optional[By] = None,
     timeout: Optional[int] = None,
@@ -56,12 +57,12 @@ def wait_and_check_exists(
 
 
 def wait_and_get(
-    driver: autoshop.typing.WebDriver,
+    driver: WebDriver,
     value: str,
     by: Optional[By] = None,
     timeout: Optional[int] = None,
     log: Optional[bool] = None,
-) -> autoshop.typing.WebElement:
+) -> WebElement:
     """
     Waits and gets the first element found.
     """
@@ -90,12 +91,12 @@ def wait_and_get(
 
 
 def wait_and_get_all(
-    driver: autoshop.typing.WebDriver,
+    driver: WebDriver,
     value: str,
     by: Optional[By] = None,
     timeout: Optional[int] = None,
     log: Optional[bool] = None,
-) -> list[autoshop.typing.WebElement]:
+) -> list[WebElement]:
     """
     Waits and gets all elements found.
     """
@@ -124,7 +125,7 @@ def wait_and_get_all(
 
 
 def wait_and_click(
-    driver: autoshop.typing.WebDriver,
+    driver: WebDriver,
     value: str,
     by: Optional[By] = None,
     timeout: Optional[int] = None,
@@ -145,7 +146,7 @@ def wait_and_click(
 
 
 def wait_and_execute_click(
-    driver: autoshop.typing.WebDriver,
+    driver: WebDriver,
     value: str,
     by: Optional[By] = None,
     timeout: Optional[int] = None,
@@ -166,7 +167,7 @@ def wait_and_execute_click(
 
 
 def wait_and_send_keys(
-    driver: autoshop.typing.WebDriver,
+    driver: WebDriver,
     value: str,
     keys: str,
     by: Optional[By] = None,
@@ -188,7 +189,7 @@ def wait_and_send_keys(
 
 
 def wait_and_select_all_and_send_keys(
-    driver: autoshop.typing.WebDriver,
+    driver: WebDriver,
     value: str,
     keys: str,
     by: Optional[By] = None,
@@ -213,7 +214,7 @@ def wait_and_select_all_and_send_keys(
 
 
 def wait_and_delete_and_send_keys(
-    driver: autoshop.typing.WebDriver,
+    driver: WebDriver,
     value: str,
     keys: str,
     by: Optional[By] = None,

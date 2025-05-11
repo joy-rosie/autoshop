@@ -1,6 +1,6 @@
 import pytest
 
-import autoshop
+from autoshop import all as autoshop
 
 TEST_URL = "https://www.tesco.com/groceries/en-GB/products/254656543"
 

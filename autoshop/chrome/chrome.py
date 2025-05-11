@@ -1,11 +1,11 @@
 import undetected_chromedriver
 
-from autoshop.util.typing import WebDriver as TypeDriver
+from autoshop.util.typing import WebDriver
 
 __all__ = ["driver"]
 
 
-def driver() -> TypeDriver:
+def driver() -> WebDriver:
     options = undetected_chromedriver.ChromeOptions()
     options.add_argument("--start-maximized")
     options.add_argument("--password-store=basic")

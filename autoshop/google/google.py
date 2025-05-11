@@ -3,7 +3,8 @@ from typing import Optional
 import pandas as pd
 import requests
 
-import autoshop
+from autoshop.environment import get as get_env
+from autoshop.util.logging import logger as get_logger
 
 __all__ = [
     "get",
@@ -15,7 +16,7 @@ __all__ = [
 ]
 
 
-LOGGER = autoshop.logging.logger(__name__)
+LOGGER = get_logger(__name__)
 URL_BASE = "https://sheets.googleapis.com/v4/spreadsheets"
 ID_INFORMATION_RECIPE = "1qMt1jKFf3OVILmA-MsQ8Ga-8vsYLsCX0ky00zairf9M"
 ID_TESCO_FOOD = "1WVGEW5ni7xUs6o5Bs_8joM2iKZclX7hO3lTq2Wp8H-U"
@@ -27,7 +28,7 @@ def get_raw(
     google_api_key: Optional[str] = None,
 ) -> dict:
     if google_api_key is None:
-        google_api_key = autoshop.env.get("GOOGLE_API_KEY")
+        google_api_key = get_env("GOOGLE_API_KEY")
     LOGGER.info(f"Requesting from {url=}")
     response = requests.get(f"{url}?key={google_api_key}")
     return response.json()

@@ -1,4 +1,4 @@
-import autoshop
+from autoshop import all as autoshop
 
 
 def test_driver():
