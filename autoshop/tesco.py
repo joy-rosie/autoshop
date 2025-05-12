@@ -375,36 +375,45 @@ def checkout(
     driver: WebDriver,
     to_confirm_changes: bool = False,
 ) -> NoReturn:
-    checkout_str = "Checkout" + (" to confirm changes" if to_confirm_changes else "")
-    xpath_span_checkout = f"//span[text()='{checkout_str}']"
-    wait_and_execute_click(driver=driver, value=xpath_span_checkout)
+    if to_confirm_changes:
+        checkout_str = "Checkout to confirm changes"
+        xpath_span_checkout = f"//span[text()='{checkout_str}']"
+        wait_and_execute_click(driver=driver, value=xpath_span_checkout)
+    else:
+        checkout_str = "Checkout"
+        xpath_a_checkout = f"//a//span[text()='{checkout_str}']/.."
+        wait_and_execute_click(driver=driver, value=xpath_a_checkout)
 
-    xpath_a_checkout = f"//a//span[text()='{checkout_str}']"
-    wait_and_execute_click(driver=driver, value=xpath_a_checkout)
+    checkout_again_str = "Check out"
+    xpath_checkout_again = f"//a//span[text()='{checkout_again_str}']/.."
+    wait_and_execute_click(driver=driver, value=xpath_checkout_again)
 
     if to_confirm_changes:
         xpath_a_continue_checkout = "//button//span[text()='Continue checkout']"
         wait_and_execute_click(driver=driver, value=xpath_a_continue_checkout)
     else:
-        xpath_a_continue_checkout = "//a//span[text()='Continue checkout']"
+        xpath_a_continue_checkout = "//a//span[text()='Continue checkout']/.."
         wait_and_execute_click(driver=driver, value=xpath_a_continue_checkout)
 
-        xpath_span_continue_to_payment = "//span[text()='Continue to payment']"
+        xpath_span_continue_to_payment = (
+            "//button//span[text()='Continue to payment']/.."
+        )
         wait_and_execute_click(driver=driver, value=xpath_span_continue_to_payment)
 
 
 def pay(
     driver: WebDriver,
+    cvc: bool = False,
 ) -> NoReturn:
     driver.switch_to.frame("bounty-iframe")
-
-    xpath_cvc = "//input[@id='card-cvc']"
-    wait_and_send_keys(
-        driver=driver,
-        value=xpath_cvc,
-        keys=getpass.getpass(),
-        log=False,
-    )
+    if cvc:
+        xpath_cvc = "//input[@id='card-cvc']"
+        wait_and_send_keys(
+            driver=driver,
+            value=xpath_cvc,
+            keys=getpass.getpass(),
+            log=False,
+        )
 
     xpath_confirm_order = "//input[@value='Confirm order']"
     wait_and_click(driver=driver, value=xpath_confirm_order)

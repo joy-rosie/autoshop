@@ -13,6 +13,7 @@ from autoshop.util.typing import WebDriver, WebElement
 __all__ = [
     "by",
     "keys",
+    "TimeoutException",
     "wait_and_check_exists",
     "wait_and_click",
     "wait_and_delete_and_send_keys",
