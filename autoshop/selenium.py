@@ -11,6 +11,8 @@ from autoshop.util.logging import logger as get_logger
 from autoshop.util.typing import WebDriver, WebElement
 
 __all__ = [
+    "by",
+    "keys",
     "wait_and_check_exists",
     "wait_and_click",
     "wait_and_delete_and_send_keys",
@@ -23,6 +25,9 @@ __all__ = [
 
 TIMEOUT_DEFAULT = 10
 LOGGER = get_logger(__name__)
+
+by = By
+keys = Keys
 
 
 def wait_and_check_exists(
