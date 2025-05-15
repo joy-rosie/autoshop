@@ -376,22 +376,25 @@ def checkout(
     to_confirm_changes: bool = False,
 ) -> NoReturn:
     if to_confirm_changes:
-        checkout_str = "Checkout to confirm changes"
+        checkout_str = "Check out to confirm changes"
         xpath_span_checkout = f"//span[text()='{checkout_str}']"
         wait_and_execute_click(driver=driver, value=xpath_span_checkout)
+
+        xpath_a_continue_checkout = "//a//span[text()='Continue checkout']"
+        wait_and_execute_click(driver=driver, value=xpath_a_continue_checkout)
+        wait_and_execute_click(driver=driver, value=xpath_a_continue_checkout)
+
+        xpath_confirm_order = "//button//span[text()='Confirm order']"
+        wait_and_execute_click(driver=driver, value=xpath_confirm_order)
     else:
         checkout_str = "Checkout"
         xpath_a_checkout = f"//a//span[text()='{checkout_str}']/.."
         wait_and_execute_click(driver=driver, value=xpath_a_checkout)
 
-    checkout_again_str = "Check out"
-    xpath_checkout_again = f"//a//span[text()='{checkout_again_str}']/.."
-    wait_and_execute_click(driver=driver, value=xpath_checkout_again)
+        checkout_again_str = "Check out"
+        xpath_checkout_again = f"//a//span[text()='{checkout_again_str}']/.."
+        wait_and_execute_click(driver=driver, value=xpath_checkout_again)
 
-    if to_confirm_changes:
-        xpath_a_continue_checkout = "//button//span[text()='Continue checkout']"
-        wait_and_execute_click(driver=driver, value=xpath_a_continue_checkout)
-    else:
         xpath_a_continue_checkout = "//a//span[text()='Continue checkout']/.."
         wait_and_execute_click(driver=driver, value=xpath_a_continue_checkout)
 
