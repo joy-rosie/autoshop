@@ -309,7 +309,7 @@ def add_food_to_basket(
 
     LOGGER.debug(f"Trying to add {amount=} for {url=}, {info}")
     driver.get(url)
-    time.sleep(1)
+    time.sleep(2)
     wait_and_delete_and_send_keys(
         driver=driver,
         value=xpath_product_input_amount,
