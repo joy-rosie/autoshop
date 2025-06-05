@@ -349,6 +349,7 @@ def add_food_to_basket_with_retry(
 
     num_retries = -1
     done = False
+    time.sleep(1)
     while not done:
         try:
             num_retries += 1
