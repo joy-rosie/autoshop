@@ -7,6 +7,7 @@ from typing import NoReturn, Optional
 
 from autoshop.environment import get as get_env
 from autoshop.selenium import (
+    TimeoutException,
     by,
     wait_and_check_exists,
     wait_and_click,
@@ -309,6 +310,15 @@ def add_food_to_basket(
 
     LOGGER.debug(f"Trying to add {amount=} for {url=}, {info}")
     driver.get(url)
+
+    out_of_stock = check_if_out_of_stock(driver=driver)
+    already_in_basket = check_if_in_basket(driver=driver)
+    if out_of_stock:
+        LOGGER.warning(f"Out of stock, {info}")
+        return
+    if already_in_basket:
+        LOGGER.warning(f"Already in basket, {info}")
+        return
     time.sleep(2)
     wait_and_delete_and_send_keys(
         driver=driver,
@@ -325,15 +335,31 @@ def check_if_out_of_stock(
     driver: WebDriver,
 ) -> bool:
     try:
-        xpath_out_of_stock = "//div[contains(text(),'currently out of stock')]"
+        xpath_out_of_stock = "//span[contains(text(),'currently out of stock') or contains(text(),'product quantity can no longer be increased')]"
         wait_and_get(
             driver=driver,
             value=xpath_out_of_stock,
             by=by.XPATH,
-            timeout=1,
+            timeout=3,
         )
         return True
-    except Exception:
+    except TimeoutException:
+        return False
+
+
+def check_if_in_basket(
+    driver: WebDriver,
+) -> bool:
+    try:
+        xpath_out_of_stock = "//p[contains(text(),'in basket')]"
+        wait_and_get(
+            driver=driver,
+            value=xpath_out_of_stock,
+            by=by.XPATH,
+            timeout=3,
+        )
+        return True
+    except TimeoutException:
         return False
 
 
@@ -383,7 +409,7 @@ def checkout(
             wait_and_execute_click(driver=driver, value=xpath_span_checkout)
         except TimeoutError:
             checkout_str = "Checkout to confirm changes"
-            xpath_span_checkout = f"//span[text()='{checkout_str}']"
+            xpath_span_checkout = f"//a//span[text()='{checkout_str}']/.."
             wait_and_execute_click(driver=driver, value=xpath_span_checkout)
 
         xpath_a_continue_checkout = "//a//span[text()='Continue checkout']"
