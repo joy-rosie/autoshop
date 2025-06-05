@@ -67,7 +67,7 @@ def login(
 
     LOGGER.info(f"Logging into via {url=} with {email=}")
 
-    xpath_cookies_accept = "//button[@type='submit']//span[text()='Accept all cookies']"
+    xpath_cookies_accept = "//button[@type='button']//span[text()='Accept all']"
     wait_and_execute_click(
         driver=driver,
         value=xpath_cookies_accept,
