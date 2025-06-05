@@ -345,7 +345,7 @@ def add_food_to_basket_with_retry(
     max_retries: Optional[int] = None,
 ) -> NoReturn:
     if max_retries is None:
-        max_retries = 1
+        max_retries = 0
 
     num_retries = -1
     done = False
@@ -376,9 +376,14 @@ def checkout(
     to_confirm_changes: bool = False,
 ) -> NoReturn:
     if to_confirm_changes:
-        checkout_str = "Check out to confirm changes"
-        xpath_span_checkout = f"//span[text()='{checkout_str}']"
-        wait_and_execute_click(driver=driver, value=xpath_span_checkout)
+        try:
+            checkout_str = "Check out to confirm changes"
+            xpath_span_checkout = f"//span[text()='{checkout_str}']"
+            wait_and_execute_click(driver=driver, value=xpath_span_checkout)
+        except TimeoutError:
+            checkout_str = "Checkout to confirm changes"
+            xpath_span_checkout = f"//span[text()='{checkout_str}']"
+            wait_and_execute_click(driver=driver, value=xpath_span_checkout)
 
         xpath_a_continue_checkout = "//a//span[text()='Continue checkout']"
         wait_and_execute_click(driver=driver, value=xpath_a_continue_checkout)
