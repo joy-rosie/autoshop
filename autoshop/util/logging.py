@@ -20,6 +20,7 @@ CONSOLE_HANDLER.setFormatter(FORMATTER)
 
 def logger(name: str) -> logging.Logger:
     logger_ = logging.Logger(name=name)
+    logger_.setLevel(logging.DEBUG)  # Set logger level to DEBUG to allow all messages
     logger_.addHandler(FILE_HANDLER)
     logger_.addHandler(CONSOLE_HANDLER)
     return logger_
