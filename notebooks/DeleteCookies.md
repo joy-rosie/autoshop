@@ -1,0 +1,2 @@
+- Use the following when you get Tesco errors
+- ... -> "Settings" -> "Privacy and security" -> "Delete browsing data" -> Select "Cookies and other site data" for Time range "Last 7 days" -> "Delete Data"
