@@ -18,3 +18,7 @@ git clone https://github.com/joy-rosie/autoshop.git && .\setup.ps1
 ```ps1
 .\run_tests.ps1
 ```
+
+# Tesco not working
+- Sometimes, you get access issues for Tesco
+- For this, you want to make sure all the VPNs are off
