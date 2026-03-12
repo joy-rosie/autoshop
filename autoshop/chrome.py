@@ -16,7 +16,7 @@ def driver() -> WebDriver:
             "profile.password_manager_enabled": False,
         },
     )
-    # Set if needed version_main=144
-    driver = undetected_chromedriver.Chrome(options=options)
+    # Set if needed version_main=145
+    driver = undetected_chromedriver.Chrome(options=options, version_main=145)
     driver.delete_all_cookies()
     return driver
